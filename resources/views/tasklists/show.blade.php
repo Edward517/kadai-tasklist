@@ -6,6 +6,8 @@
 
     <p>{{ $tasklist->content }}</p>
     
+    <p>状態: {{ $tasklist->status }}</p>
+    
     {!! link_to_route('tasklists.edit', 'このタスクを編集', ['id' => $tasklist->id]) !!}
     
     {!! Form::model($tasklist, ['route' => ['tasklists.destroy', $tasklist->id], 'method' => 'delete']) !!}
