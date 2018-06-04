@@ -47,12 +47,6 @@ class TasklistsController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $this->validate($request, [
-        'status' => 'required|max:10', 
-        'content' => 'required|max:191',
-        ]);
-        
         $tasklist = new Tasklist;
         $tasklist->status = $request->status;
         $tasklist->content = $request->content;
@@ -100,11 +94,6 @@ class TasklistsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-        'status' => 'required|max:10',
-        'content' => 'required|max:191',
-        ]);
-        
         $tasklist = Tasklist::find($id);
         $tasklist->status = $request->status;
         $tasklist->content = $request->content;
