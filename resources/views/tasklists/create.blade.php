@@ -13,8 +13,8 @@
          
             
                 <div class="form-group">
-                    {!! Form::label('title', '状態:') !!}
-                    {!! Form::text('title', null, ['class' => 'form-control']) !!}
+                    {!! Form::label('status', '状態:') !!}
+                    {!! Form::text('status', null, ['class' => 'form-control']) !!}
                 </div>
                     
                 <div class="form-group">
