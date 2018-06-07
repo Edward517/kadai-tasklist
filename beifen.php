@@ -18,17 +18,23 @@ class TasklistsController extends Controller
     public function index()
     {
         
-         $tasklists = [];
+        $tasklists = Tasklist::all();
+
+        return view('tasklists.index', [
+            'tasklists' => $tasklists,
+        ]);
+        
+         $data = [ ];
         if (\Auth::check()) {
             $user = \Auth::user();
-            $tasklists = $user->tasklists()->orderBy('created_at', 'desc')->paginate(10);
+            $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
 
-            $tasklists = [
+            $data = [
                 'user' => $user,
-                'tasklists' => $tasklists,
+                'microposts' => $microposts,
             ];
-            $tasklists += $this->counts($user);
-            return view('tasklists.index', $tasklists);
+            $data += $this->counts($user);
+            return view('users.show', $data);
         }else {
             return view('welcome');
         }
@@ -77,9 +83,9 @@ class TasklistsController extends Controller
     {
         if (\Auth::check()) {
             $user = \Auth::user();
-            $tasklist = Tasklist::find($id);
+            $task = \Task::find($id);
             
-            if ($tasklist->user_id == $user->id) {
+            if ($task->user_id == $user->id) {
                  $tasklist = Tasklist::find($id);
                 
                 
@@ -89,12 +95,10 @@ class TasklistsController extends Controller
                 
             } else {
                 // 一覧ページへリダイレクト
-                return redirect('/');
             }
         } else {
             
             //  welcome ページへリダイレクト
-            return view('welcome');
         }
         
                
@@ -139,13 +143,11 @@ class TasklistsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-   {
-        $tasklist = \App\Tasklist::find($id);
+    {
+        $tasklist = Tasklist::find($id);
+        $tasklist->delete();
 
-        if (\Auth::user()->id === $tasklist->user_id) {
-            $tasklist->delete();
-        }
+        return redirect('/');
 
-        return redirect()->back();
     }
 }
