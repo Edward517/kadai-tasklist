@@ -58,6 +58,10 @@ class TasklistsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'status' => 'required|max:10', 
+            'content' => 'required|max:10',
+        ]);
         $tasklist = new Tasklist;
         $tasklist->status = $request->status;
         $tasklist->content = $request->content;
@@ -109,10 +113,14 @@ class TasklistsController extends Controller
     public function edit($id)
     {
         $tasklist = Tasklist::find($id);
-
-        return view('tasklists.edit', [
-            'tasklist' => $tasklist,
-        ]);
+        
+        if (\Auth::check()) {
+        
+        if (\Auth::user()->id === $tasklist->user_id) {
+            return view('tasklists.edit', [
+            'tasklist' => $tasklist,]);
+        } }
+        return redirect('/');
     }
 
     /**
@@ -124,6 +132,12 @@ class TasklistsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
+        $this->validate($request, [
+            'status' => 'required|max:10', 
+            'content' => 'required|max:10',
+        ]);
+        
         $tasklist = Tasklist::find($id);
         $tasklist->status = $request->status;
         $tasklist->content = $request->content;
@@ -140,12 +154,12 @@ class TasklistsController extends Controller
      */
     public function destroy($id)
    {
-        $tasklist = \App\Tasklist::find($id);
+        $tasklist = Tasklist::find($id);
 
         if (\Auth::user()->id === $tasklist->user_id) {
             $tasklist->delete();
         }
 
-        return redirect()->back();
+        return redirect('/');
     }
 }
