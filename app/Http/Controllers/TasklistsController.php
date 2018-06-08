@@ -41,12 +41,16 @@ class TasklistsController extends Controller
      */
     public function create()
     {
+        
+         if (\Auth::check()) {
         $tasklist = new Tasklist;
         
         
         return view('tasklists.create', [
             'tasklist' => $tasklist,
-        ]);
+        ]); }
+        
+        return view('welcome');
 
     }
 
