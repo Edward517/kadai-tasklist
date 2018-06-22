@@ -26,3 +26,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
     Route::resource('tasklists', 'TasklistsController', ['only' => ['store', 'destroy']]);
 });
+add a cat to my route
